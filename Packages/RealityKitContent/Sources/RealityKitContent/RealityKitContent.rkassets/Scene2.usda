@@ -1,0 +1,81 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.12.508.1)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "Scaniverse_2024_09_13_195929" (
+        active = true
+        prepend references = @Scaniverse 2024-09-13 195929.usdz@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-0.12468606, 1.1920929e-7, 0.555778)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Sphere "Sphere" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/Material> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.5
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-0.102231115, 0.7617155, 0.606526)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            prepend token outputs:surface.connect = </Root/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Material "Material"
+    {
+        token outputs:mtlx:surface.connect = </Root/Material/PreviewSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (997.2344, 85.49219)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 5
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+            float inputs:clearcoat = 1
+            float inputs:clearcoatRoughness = 0
+            color3f inputs:diffuseColor = (0, 0, 0) (
+                colorSpace = "srgb_texture"
+            )
+            color3f inputs:emissiveColor = (0, 0, 0) (
+                colorSpace = "srgb_texture"
+            )
+            float inputs:ior = 1
+            float inputs:metallic = 1
+            float3 inputs:normal = (1, 1, 1)
+            float inputs:occlusion = 1
+            float inputs:roughness = 0
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (609.83594, 74.10547)
+            int ui:nodegraph:node:stackingOrder = 33
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["Advanced", "inputs:clearcoatRoughness"]
+        }
+    }
+}
+

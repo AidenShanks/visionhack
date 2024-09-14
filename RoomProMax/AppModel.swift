@@ -1,21 +1,16 @@
-//
-//  AppModel.swift
-//  RoomProMax
-//
-//  Created by Aiden Shanks on 9/14/24.
-//
-
 import SwiftUI
 
 /// Maintains app-wide state
 @MainActor
-@Observable
-class AppModel {
-    let immersiveSpaceID = "ImmersiveSpace"
+class AppModel: ObservableObject {
+    // Current immersive space ID
+    @Published var currentImmersiveSpaceID: String = ""
+
     enum ImmersiveSpaceState {
         case closed
         case inTransition
         case open
     }
-    var immersiveSpaceState = ImmersiveSpaceState.closed
+
+    @Published var immersiveSpaceState = ImmersiveSpaceState.closed
 }
