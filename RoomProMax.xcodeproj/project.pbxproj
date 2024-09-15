@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E3C355D2C966894004B74D0 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 3E3C355C2C966894004B74D0 /* RealityKitContent */; };
 		3EC9B0862C960AA20053DB01 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 3EC9B0852C960AA20053DB01 /* RealityKitContent */; };
-		3EC9B0CB2C96243E0053DB01 /* RoomProMax1 in Frameworks */ = {isa = PBXBuildFile; productRef = 3EC9B0CA2C96243E0053DB01 /* RoomProMax1 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3EC9B0CB2C96243E0053DB01 /* RoomProMax1 in Frameworks */,
+				3E3C355D2C966894004B74D0 /* RealityKitContent in Frameworks */,
 				3EC9B0862C960AA20053DB01 /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,7 +121,7 @@
 			name = RoomProMax;
 			packageProductDependencies = (
 				3EC9B0852C960AA20053DB01 /* RealityKitContent */,
-				3EC9B0CA2C96243E0053DB01 /* RoomProMax1 */,
+				3E3C355C2C966894004B74D0 /* RealityKitContent */,
 			);
 			productName = RoomProMax;
 			productReference = 3EC9B0802C960AA20053DB01 /* RoomProMax.app */;
@@ -179,7 +179,7 @@
 			mainGroup = 3EC9B0772C960AA10053DB01;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				3EC9B0C92C96243E0053DB01 /* XCLocalSwiftPackageReference "../../../../../RoomProMax1" */,
+				3E3C355B2C966894004B74D0 /* XCLocalSwiftPackageReference "../../Downloads/Packages/RealityKitContent" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3EC9B0812C960AA20053DB01 /* Products */;
@@ -479,20 +479,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		3EC9B0C92C96243E0053DB01 /* XCLocalSwiftPackageReference "../../../../../RoomProMax1" */ = {
+		3E3C355B2C966894004B74D0 /* XCLocalSwiftPackageReference "../../Downloads/Packages/RealityKitContent" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../../RoomProMax1;
+			relativePath = ../../Downloads/Packages/RealityKitContent;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3EC9B0852C960AA20053DB01 /* RealityKitContent */ = {
+		3E3C355C2C966894004B74D0 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
 		};
-		3EC9B0CA2C96243E0053DB01 /* RoomProMax1 */ = {
+		3EC9B0852C960AA20053DB01 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = RoomProMax1;
+			productName = RealityKitContent;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

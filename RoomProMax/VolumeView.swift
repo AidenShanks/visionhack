@@ -1,69 +1,102 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
-import RoomProMax1
 import Combine
 
 struct VolumeView: View {
+    
+    @State private var subs: [EventSubscription] = []
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace  // Add environment variable to open immersive space
+    @EnvironmentObject private var appModel: AppModel  // Access the app model for managing immersive spaces
+
     var body: some View {
         VStack {
             RealityView { content in
-                    // Load the door entity from your RealityKit bundle
-                    if let doorEntity = try? await Entity(named: "door", in: roomProMax1Bundle) {
-                        
-                        // Add collision component to the door
-                        doorEntity.generateCollisionShapes(recursive: true)
-                        
-                        // Add the door entity to the scene
-                        content.add(doorEntity)
-                        
-                            // Create and add hand collision entities for both hands
-                            let rightHandAnchor = AnchorEntity(.hand(.right, location: .indexFingerTip))
-                            let leftHandAnchor = AnchorEntity(.hand(.left, location: .indexFingerTip))
+                // Load the door entity from your RealityKit bundle
+                if let doorEntity = try? await Entity(named: "door", in: realityKitContentBundle) {
 
-                            let rightHandEntity = createHandCollisionEntity()
-                            let leftHandEntity = createHandCollisionEntity()
-                            
-                            rightHandAnchor.addChild(rightHandEntity)
-                            leftHandAnchor.addChild(leftHandEntity)
-                            
-                            content.add(rightHandAnchor)
-                            content.add(leftHandAnchor)
+                    let floor = ModelEntity(mesh: .generatePlane(width: 20, depth: 20))
+                    let floorPhysics = PhysicsBodyComponent(
+                        massProperties: .default,
+                        material: .generate(friction: 0.8, restitution: 0.1),
+                        mode: .static
+                    )
+                    floor.components[OpacityComponent.self] = .init(opacity: 0)  // Make the floor invisible
+                    
+                    floor.components.set(floorPhysics)
+                    floor.collision = CollisionComponent(
+                        shapes: [.generateBox(width: 20, height: -0.01, depth: 20)]
+                    )
+                    
+                    // Anchor for the floor
+                    let anchor = AnchorEntity(.plane(.horizontal, classification: .floor, minimumBounds: [0.5, 0.5]))
+                    anchor.addChild(floor)
+                    
+                    // Set the door entity (cube) with a trigger volume
+                    if let door = doorEntity.findEntity(named: "Cube") {
+                        let cubeCollision = CollisionComponent(
+                            shapes: [.generateBox(width: 5, height: 10, depth: 2.5)], mode: .trigger
+                        )
+                        door.components.set(cubeCollision)  // Set collision component
+
+                        // Subscribe to collision events on the door
+                        let event = content.subscribe(to: CollisionEvents.Began.self, on: door) { ce in
+                            if ce.entityA.name == "RightHand" || ce.entityB.name == "RightHand" {
+                                // Trigger immersive space when the player "walks" into the door
+                                triggerImmersiveSpace()
+                            }
+                        }
                         
-                        // Set up collision interaction with the door
-                        setupInteraction(for: doorEntity)
+                        // Append the event subscription
+                        DispatchQueue.main.async {
+                            subs.append(event)
+                        }
                     }
+                    
+                    content.add(anchor)
+                    content.add(doorEntity)
+                    
+                    // Create hand entities (representing the player for now)
+                    let rightHandAnchor = AnchorEntity(.hand(.right, location: .indexFingerTip))
+                    let handSphere = MeshResource.generateSphere(radius: 0.01)
+                    let handMaterial = SimpleMaterial(color: .red, isMetallic: false)
+                    
+                    let rightHandEntity = ModelEntity(mesh: handSphere, materials: [handMaterial])
+                    rightHandEntity.name = "RightHand"
+                    rightHandEntity.physicsBody = PhysicsBodyComponent(
+                        massProperties: .default,
+                        material: .generate(friction: 0.5, restitution: 0.3),
+                        mode: .kinematic
+                    )
+                    rightHandEntity.collision = CollisionComponent(
+                        shapes: [.generateSphere(radius: 0.01)],
+                        mode: .trigger  // Set as trigger
+                    )
+                    
+                    rightHandAnchor.addChild(rightHandEntity)
+                    content.add(rightHandAnchor)
                 }
             }
         }
-    
-
-    
-    // Function to create a small sphere entity for hand collision detection
-    func createHandCollisionEntity() -> Entity {
-        let handSphere = MeshResource.generateSphere(radius: 0.01)  // Small sphere for fingertip
-        let handMaterial = SimpleMaterial(color: .red, isMetallic: false)
-        let handEntity = ModelEntity(mesh: handSphere, materials: [handMaterial])
-        
-        // Add collision and physics components for the hand entity
-        handEntity.physicsBody = PhysicsBodyComponent(mode: .kinematic)
-        handEntity.collision = CollisionComponent(
-            shapes: [.generateSphere(radius: 0.01)]
-        )
-        
-        return handEntity
     }
     
-    // Function to set up interaction between hand and door entity
-    func setupInteraction(for doorEntity: Entity) {
-        doorEntity.scene?.subscribe(to: CollisionEvents.Began.self, on: doorEntity) { event in
-            // Check if the collision was with one of the hand entities
-            if event.entityA.name == "hand" || event.entityB.name == "hand" {
-                print("User touched the door with their hand.")
+    // Function to trigger immersive space transition
+    func triggerImmersiveSpace() {
+        Task {
+            // Ensure we are transitioning into the immersive space
+            appModel.immersiveSpaceState = .inTransition
+            
+            // Open the immersive space
+            switch await openImmersiveSpace(id: "space1") {
+            case .opened:
+                appModel.immersiveSpaceState = .open
+                print("Entered Immersive Space!")
+            case .userCancelled, .error:
+                fallthrough
+            @unknown default:
+                appModel.immersiveSpaceState = .closed
+                print("Failed to Enter Immersive Space.")
             }
-        }.store(in: &cancellables)
+        }
     }
-    
-    // To hold the event subscription
-    @State private var cancellables = Set<AnyCancellable>()
 }
