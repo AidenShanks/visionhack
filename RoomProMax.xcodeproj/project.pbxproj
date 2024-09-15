@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		3E3C355D2C966894004B74D0 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 3E3C355C2C966894004B74D0 /* RealityKitContent */; };
+		3E3C35782C96B00C004B74D0 /* RoomProMax1 in Frameworks */ = {isa = PBXBuildFile; productRef = 3E3C35772C96B00C004B74D0 /* RoomProMax1 */; };
+		3E3C357A2C96B051004B74D0 /* RoomProMax1 in Frameworks */ = {isa = PBXBuildFile; productRef = 3E3C35792C96B051004B74D0 /* RoomProMax1 */; };
+		3E3C357D2C9775A8004B74D0 /* RoomProMax1 in Frameworks */ = {isa = PBXBuildFile; productRef = 3E3C357C2C9775A8004B74D0 /* RoomProMax1 */; };
+		3E8179082C9781B800AC3434 /* testproject in Frameworks */ = {isa = PBXBuildFile; productRef = 3E8179072C9781B800AC3434 /* testproject */; };
+		3E81790B2C9781E000AC3434 /* RoomProMax1 in Frameworks */ = {isa = PBXBuildFile; productRef = 3E81790A2C9781E000AC3434 /* RoomProMax1 */; };
+		3E8179102C9785C900AC3434 /* RoomProMax1 in Frameworks */ = {isa = PBXBuildFile; productRef = 3E81790F2C9785C900AC3434 /* RoomProMax1 */; };
+		3E8179132C9787F000AC3434 /* RoomProMax1 in Frameworks */ = {isa = PBXBuildFile; productRef = 3E8179122C9787F000AC3434 /* RoomProMax1 */; };
+		3E8179162C9792B500AC3434 /* RoomProMax1 in Frameworks */ = {isa = PBXBuildFile; productRef = 3E8179152C9792B500AC3434 /* RoomProMax1 */; };
 		3EC9B0862C960AA20053DB01 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 3EC9B0852C960AA20053DB01 /* RealityKitContent */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +66,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E8179132C9787F000AC3434 /* RoomProMax1 in Frameworks */,
+				3E8179102C9785C900AC3434 /* RoomProMax1 in Frameworks */,
+				3E8179162C9792B500AC3434 /* RoomProMax1 in Frameworks */,
+				3E81790B2C9781E000AC3434 /* RoomProMax1 in Frameworks */,
+				3E3C357A2C96B051004B74D0 /* RoomProMax1 in Frameworks */,
+				3E3C35782C96B00C004B74D0 /* RoomProMax1 in Frameworks */,
+				3E8179082C9781B800AC3434 /* testproject in Frameworks */,
+				3E3C357D2C9775A8004B74D0 /* RoomProMax1 in Frameworks */,
 				3E3C355D2C966894004B74D0 /* RealityKitContent in Frameworks */,
 				3EC9B0862C960AA20053DB01 /* RealityKitContent in Frameworks */,
 			);
@@ -122,6 +138,14 @@
 			packageProductDependencies = (
 				3EC9B0852C960AA20053DB01 /* RealityKitContent */,
 				3E3C355C2C966894004B74D0 /* RealityKitContent */,
+				3E3C35772C96B00C004B74D0 /* RoomProMax1 */,
+				3E3C35792C96B051004B74D0 /* RoomProMax1 */,
+				3E3C357C2C9775A8004B74D0 /* RoomProMax1 */,
+				3E8179072C9781B800AC3434 /* testproject */,
+				3E81790A2C9781E000AC3434 /* RoomProMax1 */,
+				3E81790F2C9785C900AC3434 /* RoomProMax1 */,
+				3E8179122C9787F000AC3434 /* RoomProMax1 */,
+				3E8179152C9792B500AC3434 /* RoomProMax1 */,
 			);
 			productName = RoomProMax;
 			productReference = 3EC9B0802C960AA20053DB01 /* RoomProMax.app */;
@@ -180,6 +204,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				3E3C355B2C966894004B74D0 /* XCLocalSwiftPackageReference "../../Downloads/Packages/RealityKitContent" */,
+				3E8179062C9781B800AC3434 /* XCLocalSwiftPackageReference "../../RoomsConnor" */,
+				3E8179142C9792B500AC3434 /* XCLocalSwiftPackageReference "../../RoomsAlakhAiden" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3EC9B0812C960AA20053DB01 /* Products */;
@@ -483,12 +509,52 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../Downloads/Packages/RealityKitContent;
 		};
+		3E8179062C9781B800AC3434 /* XCLocalSwiftPackageReference "../../RoomsConnor" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../RoomsConnor;
+		};
+		3E8179142C9792B500AC3434 /* XCLocalSwiftPackageReference "../../RoomsAlakhAiden" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../RoomsAlakhAiden;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		3E3C355C2C966894004B74D0 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
+		};
+		3E3C35772C96B00C004B74D0 /* RoomProMax1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoomProMax1;
+		};
+		3E3C35792C96B051004B74D0 /* RoomProMax1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoomProMax1;
+		};
+		3E3C357C2C9775A8004B74D0 /* RoomProMax1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoomProMax1;
+		};
+		3E8179072C9781B800AC3434 /* testproject */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = testproject;
+		};
+		3E81790A2C9781E000AC3434 /* RoomProMax1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoomProMax1;
+		};
+		3E81790F2C9785C900AC3434 /* RoomProMax1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoomProMax1;
+		};
+		3E8179122C9787F000AC3434 /* RoomProMax1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoomProMax1;
+		};
+		3E8179152C9792B500AC3434 /* RoomProMax1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoomProMax1;
 		};
 		3EC9B0852C960AA20053DB01 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;

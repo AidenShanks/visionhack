@@ -1,102 +1,106 @@
-import SwiftUI
-import RealityKit
-import RealityKitContent
-import Combine
-
-struct VolumeView: View {
-    
-    @State private var subs: [EventSubscription] = []
-    @Environment(\.openImmersiveSpace) private var openImmersiveSpace  // Add environment variable to open immersive space
-    @EnvironmentObject private var appModel: AppModel  // Access the app model for managing immersive spaces
-
-    var body: some View {
-        VStack {
-            RealityView { content in
-                // Load the door entity from your RealityKit bundle
-                if let doorEntity = try? await Entity(named: "door", in: realityKitContentBundle) {
-
-                    let floor = ModelEntity(mesh: .generatePlane(width: 20, depth: 20))
-                    let floorPhysics = PhysicsBodyComponent(
-                        massProperties: .default,
-                        material: .generate(friction: 0.8, restitution: 0.1),
-                        mode: .static
-                    )
-                    floor.components[OpacityComponent.self] = .init(opacity: 0)  // Make the floor invisible
-                    
-                    floor.components.set(floorPhysics)
-                    floor.collision = CollisionComponent(
-                        shapes: [.generateBox(width: 20, height: -0.01, depth: 20)]
-                    )
-                    
-                    // Anchor for the floor
-                    let anchor = AnchorEntity(.plane(.horizontal, classification: .floor, minimumBounds: [0.5, 0.5]))
-                    anchor.addChild(floor)
-                    
-                    // Set the door entity (cube) with a trigger volume
-                    if let door = doorEntity.findEntity(named: "Cube") {
-                        let cubeCollision = CollisionComponent(
-                            shapes: [.generateBox(width: 5, height: 10, depth: 2.5)], mode: .trigger
-                        )
-                        door.components.set(cubeCollision)  // Set collision component
-
-                        // Subscribe to collision events on the door
-                        let event = content.subscribe(to: CollisionEvents.Began.self, on: door) { ce in
-                            if ce.entityA.name == "RightHand" || ce.entityB.name == "RightHand" {
-                                // Trigger immersive space when the player "walks" into the door
-                                triggerImmersiveSpace()
-                            }
-                        }
-                        
-                        // Append the event subscription
-                        DispatchQueue.main.async {
-                            subs.append(event)
-                        }
-                    }
-                    
-                    content.add(anchor)
-                    content.add(doorEntity)
-                    
-                    // Create hand entities (representing the player for now)
-                    let rightHandAnchor = AnchorEntity(.hand(.right, location: .indexFingerTip))
-                    let handSphere = MeshResource.generateSphere(radius: 0.01)
-                    let handMaterial = SimpleMaterial(color: .red, isMetallic: false)
-                    
-                    let rightHandEntity = ModelEntity(mesh: handSphere, materials: [handMaterial])
-                    rightHandEntity.name = "RightHand"
-                    rightHandEntity.physicsBody = PhysicsBodyComponent(
-                        massProperties: .default,
-                        material: .generate(friction: 0.5, restitution: 0.3),
-                        mode: .kinematic
-                    )
-                    rightHandEntity.collision = CollisionComponent(
-                        shapes: [.generateSphere(radius: 0.01)],
-                        mode: .trigger  // Set as trigger
-                    )
-                    
-                    rightHandAnchor.addChild(rightHandEntity)
-                    content.add(rightHandAnchor)
-                }
-            }
-        }
-    }
-    
-    // Function to trigger immersive space transition
-    func triggerImmersiveSpace() {
-        Task {
-            // Ensure we are transitioning into the immersive space
-            appModel.immersiveSpaceState = .inTransition
-            
-            // Open the immersive space
-            switch await openImmersiveSpace(id: "space1") {
-            case .opened:
-                appModel.immersiveSpaceState = .open
-                print("Entered Immersive Space!")
-            case .userCancelled, .error:
-                fallthrough
-            @unknown default:
-                appModel.immersiveSpaceState = .closed
-                print("Failed to Enter Immersive Space.")
-            }
-        }
-    }
-}
+//import SwiftUI
+//import RealityKit
+//import RealityKitContent
+//import Combine
+//import RoomProMax1
+//
+//struct VolumeView: View {
+//    @Binding var isVisible: Bool
+//    @State private var doorEntity: Entity?
+//    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+//    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+//    @EnvironmentObject private var appModel: AppModel
+//    
+//    var body: some View {
+//        VStack {
+//            RealityView { content in
+//                // Load the door entity from your RealityKit bundle
+//                if let doorEntity = try? await Entity.load(named: "door",in: roomProMax1Bundle) {
+//                    print("Door entity loaded: \(doorEntity.name)")
+//                    
+//                    // Setup floor
+//                    let floor = ModelEntity(mesh: .generatePlane(width: 20, depth: 20))
+//                    let floorPhysics = PhysicsBodyComponent(
+//                        massProperties: .default,
+//                        material: .generate(friction: 0.8, restitution: 0.1),
+//                        mode: .static
+//                    )
+//                    floor.components[OpacityComponent.self] = .init(opacity: 0)  // Make the floor invisible
+//                    floor.components.set(floorPhysics)
+//                    floor.collision = CollisionComponent(
+//                        shapes: [.generateBox(width: 20, height: 0.01, depth: 20)]
+//                    )
+//                    
+//                    // Anchor for the floor
+//                    let anchor = AnchorEntity(.plane(.horizontal, classification: .floor, minimumBounds: [0.5, 0.5]))
+//                    anchor.addChild(floor)
+//                    content.add(anchor)
+//                    print("Floor added to scene")
+//                    
+//                    // Setup door
+//                    if let door = doorEntity.findEntity(named: "Cube") {
+//                        print("Door cube found: \(door.name)")
+//                        door.name = "DoorCube"
+//                        
+//                        content.add(doorEntity)
+//                        print("Door entity added to scene")
+//                        self.doorEntity = doorEntity  // Store the whole door entity
+//                    } else {
+//                        print("Failed to find 'Cube' entity in door")
+//                    }
+//                } else {
+//                    print("Failed to load door entity")
+//                }
+//            } update: { content in
+//                if let doorEntity = self.doorEntity {
+//                    doorEntity.isEnabled = isVisible
+//                }
+//            }
+//            .gesture(
+//                SpatialTapGesture()
+//                    .targetedToAnyEntity()
+//                    .onEnded { value in
+//                        let tappedEntity = value.entity
+//                        if tappedEntity.name == "DoorCube" || tappedEntity.name == "door" {
+//                            print("Door tapped!")
+//                            Task { @MainActor in
+//                                await triggerImmersiveSpace()
+//                            }
+//                        }
+//                    }
+//            )
+//            .onAppear {
+//                print("Volume View appeared")
+//            }
+//        }
+//    }
+//    
+//    func triggerImmersiveSpace() async {
+//        guard !appModel.selectedImmersiveSpaceID.isEmpty else {
+//            print("No space selected")
+//            return
+//        }
+//        
+//        // Check if an immersive space is already open or in transition
+//        guard appModel.immersiveSpaceState == .closed else {
+//            print("An immersive space is already open or in transition")
+//            return
+//        }
+//        
+//        print(appModel.immersiveSpaceState)
+//        
+//        appModel.immersiveSpaceState = .inTransition
+//        switch await openImmersiveSpace(id: appModel.selectedImmersiveSpaceID) {
+//        case .opened:
+//            appModel.immersiveSpaceState = .open
+//            appModel.currentImmersiveSpaceID = appModel.selectedImmersiveSpaceID
+//            print("Entered Immersive Space: \(appModel.selectedImmersiveSpaceID)")
+//        case .userCancelled, .error:
+//            fallthrough
+//        @unknown default:
+//            appModel.immersiveSpaceState = .closed
+//            appModel.currentImmersiveSpaceID = ""
+//            print("Failed to Enter Immersive Space.")
+//        }
+//    }
+//}

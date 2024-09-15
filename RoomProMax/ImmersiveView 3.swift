@@ -2,12 +2,12 @@ import SwiftUI
 import RealityKit
 import testproject
 
-struct ImmersiveView2: View {
+struct ImmersiveView3: View {
     @EnvironmentObject var appModel: AppModel
 
     var body: some View {
         RealityView { content in
-            if let immersiveContentEntity = try? await Entity(named: "Garden", in: testprojectBundle) {
+            if let immersiveContentEntity = try? await Entity(named: "marioInspired", in: testprojectBundle) {
                 content.add(immersiveContentEntity)
 
                 // You might want to add some logic here to customize the immersive experience

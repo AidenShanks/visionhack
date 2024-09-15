@@ -6,11 +6,11 @@
 //
 
 import AVKit
+import Combine
 
 @MainActor
-@Observable
-class AVPlayerViewModel: NSObject {
-    var isPlaying: Bool = false
+class AVPlayerViewModel: NSObject, ObservableObject {
+    @Published var isPlaying: Bool = false
     private var avPlayerViewController: AVPlayerViewController?
     private var avPlayer = AVPlayer()
     private let videoURL: URL? = {
